@@ -1,14 +1,15 @@
 {
-  "name": "Hello Extensions",
-  "description": "Base Level Extension",
+  "name": "Tab Limiter",
+  "description": "Control your app usage by limiting site visits",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
-    "default_popup": "assets/index.html",
+    "default_popup": "assets/popup.html",
     "default_icon": "assets/icon.png"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "background": {
     "service_worker": "dist/background.js"
