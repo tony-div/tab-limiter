@@ -16,9 +16,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
+    "dev": "tsc --watch"
   },
   "dependencies": {
     "typescript": "^5.9.2"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.4"
   }
 }

@@ -1,1 +1,1 @@
-console.log("hello world");
+/// <reference types="chrome"/>
