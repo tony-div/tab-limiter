@@ -1,0 +1,253 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tab Limiter</title>
+  <style>
+    body {
+      width: 400px;
+      min-height: 500px;
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: #2c3e50;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .header p {
+      margin: 5px 0 0 0;
+      color: #6c757d;
+      font-size: 14px;
+    }
+
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .section h3 {
+      margin: 0 0 15px 0;
+      color: #2c3e50;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #495057;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-danger {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #c82333;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #545b62;
+    }
+
+    .site-list {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .site-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #e9ecef;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      background-color: #f8f9fa;
+    }
+
+    .site-item.limit-reached {
+      border-color: #dc3545;
+      background-color: #f8d7da;
+    }
+
+    .site-info {
+      flex: 1;
+    }
+
+    .site-url {
+      font-weight: 500;
+      color: #2c3e50;
+      font-size: 14px;
+    }
+
+    .site-limit {
+      font-size: 12px;
+      color: #6c757d;
+      margin-top: 2px;
+    }
+
+    .site-actions {
+      display: flex;
+      gap: 5px;
+    }
+
+    .btn-small {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    .status {
+      text-align: center;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    .status.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px;
+      color: #6c757d;
+    }
+
+    .empty-state p {
+      margin: 0 0 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Tab Limiter</h1>
+  </div>
+
+  <div id="status" class="status" style="display: none;"></div>
+
+  <div class="section">
+    <h3>Add New Site Limit</h3>
+    <form id="addSiteForm">
+      <div class="form-group">
+        <label for="siteUrl">Website URL or Domain</label>
+        <input type="text" id="siteUrl" placeholder="e.g., facebook.com, twitter.com, *.youtube.com" required>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="visitLimit">Visit Limit</label>
+          <input type="number" id="visitLimit" min="1" max="100" value="5" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="timeInterval">Time Interval</label>
+          <select id="timeInterval" required>
+            <option value="hour">Per Hour</option>
+            <option value="day" selected>Per Day</option>
+            <option value="week">Per Week</option>
+          </select>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">Add Site Limit</button>
+    </form>
+  </div>
+
+  <div class="section">
+    <h3>Current Site Limits</h3>
+    <div id="siteList" class="site-list">
+      <div class="empty-state">
+        <p>No site limits configured yet.</p>
+        <p>Add your first site above to get started!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3>Quick Actions</h3>
+    <button id="clearAllBtn" class="btn btn-danger">Clear All Limits</button>
+    <button id="resetCountsBtn" class="btn btn-secondary">Reset Visit Counts</button>
+  </div>
+
+  <script type="module" src="../dist/popup.js"></script>
+</body>
+</html>
