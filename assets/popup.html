@@ -1,3 +1,4 @@
+<!DOCTYPE>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -38,163 +39,297 @@
       margin-bottom: 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+/* Use CSS custom properties for maintainability */
+:root {
+  --primary-color: #2563eb; /* Modern blue */
+  --primary-hover: #1d4ed8;
+  --danger-color: #ef4444; /* Vibrant red */
+  --danger-hover: #dc2626;
+  --secondary-color: #6b7280; /* Neutral gray */
+  --secondary-hover: #4b5563;
+  --background-color: #ffffff;
+  --text-color: #1f2a44; /* Darker for better contrast */
+  --text-muted: #6b7280;
+  --border-color: #e5e7eb;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --focus-ring: rgba(37, 99, 235, 0.3);
+  --success-bg: #d1fae5;
+  --success-text: #065f46;
+  --error-bg: #fee2e2;
+  --error-text: #991b1b;
+  --card-bg: #7d91a5;
+  --transition: all 0.2s ease-in-out;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
 
-    .section h3 {
-      margin: 0 0 15px 0;
-      color: #2c3e50;
-      font-size: 16px;
-      font-weight: 600;
-    }
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #1f2a44;
+    --text-color: #e5e7eb;
+    --text-muted: #9ca3af;
+    --border-color: #374151;
+    --card-bg: #111b36;
+    --shadow-color: rgba(0, 0, 0, 0.2);
+  }
+}
 
-    .form-group {
-      margin-bottom: 15px;
-    }
+body {
+  width: 400px;
+  min-height: 500px;
+  margin: 0;
+  padding: 1.5rem;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-size: 16px;
+  line-height: 1.5;
+  transition: var(--transition);
+}
 
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      color: #495057;
-      font-size: 14px;
-      font-weight: 500;
-    }
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
-    .form-group input, .form-group select {
-      width: 100%;
-      padding: 8px 12px;
-      border: 1px solid #ced4da;
-      border-radius: 4px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
+.header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-color);
+  letter-spacing: -0.025em;
+}
 
-    .form-group input:focus, .form-group select:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
-    }
+.section {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px var(--shadow-color);
+  transition: var(--transition);
+}
 
-    .form-row {
-      display: flex;
-      gap: 10px;
-    }
+.section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
 
-    .form-row .form-group {
-      flex: 1;
-    }
+.form-group {
+  margin-bottom: 1.25rem;
+}
 
-    .btn {
-      padding: 10px 16px;
-      border: none;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
 
-    .btn-primary {
-      background-color: #007bff;
-      color: white;
-    }
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: var(--transition);
+  box-sizing: border-box;
+}
 
-    .btn-primary:hover {
-      background-color: #0056b3;
-    }
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
 
-    .btn-danger {
-      background-color: #dc3545;
-      color: white;
-    }
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
 
-    .btn-danger:hover {
-      background-color: #c82333;
-    }
+.form-row .form-group {
+  flex: 1;
+}
 
-    .btn-secondary {
-      background-color: #6c757d;
-      color: white;
-    }
+.btn {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
 
-    .btn-secondary:hover {
-      background-color: #545b62;
-    }
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
 
-    .site-list {
-      max-height: 200px;
-      overflow-y: auto;
-    }
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
 
-    .site-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px;
-      border: 1px solid #e9ecef;
-      border-radius: 4px;
-      margin-bottom: 8px;
-      background-color: #f8f9fa;
-    }
+.btn-danger {
+  background-color: var(--danger-color);
+  color: #ffffff;
+}
 
-    .site-item.limit-reached {
-      border-color: #dc3545;
-      background-color: #f8d7da;
-    }
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: var(--danger-hover);
+  transform: translateY(-1px);
+}
 
-    .site-info {
-      flex: 1;
-    }
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+}
 
-    .site-url {
-      font-weight: 500;
-      color: #2c3e50;
-      font-size: 14px;
-    }
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: var(--secondary-hover);
+  transform: translateY(-1px);
+}
 
-    .site-limit {
-      font-size: 12px;
-      color: #6c757d;
-      margin-top: 2px;
-    }
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
 
-    .site-actions {
-      display: flex;
-      gap: 5px;
-    }
+.site-list {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary-color) var(--card-bg);
+}
 
-    .btn-small {
-      padding: 4px 8px;
-      font-size: 12px;
-    }
+.site-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  background-color: var(--card-bg);
+  transition: var(--transition);
+}
 
-    .status {
-      text-align: center;
-      padding: 10px;
-      border-radius: 4px;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
+.site-item.limit-reached {
+  border-color: var(--danger-color);
+  background-color: var(--error-bg);
+  color: var(--error-text);
+}
 
-    .status.success {
-      background-color: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
+.site-info {
+  flex: 1;
+}
 
-    .status.error {
-      background-color: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
+.site-url {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
 
-    .empty-state {
-      text-align: center;
-      padding: 30px;
-      color: #6c757d;
-    }
+.site-limit {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
 
-    .empty-state p {
-      margin: 0 0 10px 0;
-    }
+.site-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-small {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+.status {
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.status.success {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+  border: 1px solid var(--success-bg);
+}
+
+.status.error {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-bg);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.empty-state p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+/* Accessibility improvements */
+:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar for modern browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card-bg);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-hover);
+}
+
+/* Animation for section appearance */
+.section {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
   </style>
 </head>
 <body>
@@ -224,6 +359,7 @@
             <option value="hour">Per Hour</option>
             <option value="day" selected>Per Day</option>
             <option value="week">Per Week</option>
+            <option value="minutes">Per 30 Minutes</option>
           </select>
         </div>
       </div>
