@@ -2,7 +2,7 @@ interface SiteLimit {
   id: string;
   url: string;
   visitLimit: number;
-  timeInterval: 'hour' | 'day' | 'week';
+  timeInterval: 'hour' | 'day' | 'week' | 'minutes';
   visitCount: number;
   lastReset: number;
   createdAt: number;
@@ -46,7 +46,7 @@ class TabLimiterPopup {
 
     const url = urlInput.value.trim();
     const visitLimit = parseInt(limitInput.value);
-    const timeInterval = intervalSelect.value as 'hour' | 'day' | 'week';
+    const timeInterval = intervalSelect.value as 'hour' | 'day' | 'week' | 'minutes';
 
     if (!url || !visitLimit || visitLimit < 1) {
       this.showStatus('Please fill in all fields with valid values.', 'error');
@@ -119,6 +119,7 @@ class TabLimiterPopup {
       }
 
       this.renderSiteLimits(siteLimits);
+      
     } catch (error) {
       console.error('Error loading site limits:', error);
       this.showStatus('Error loading site limits.', 'error');
@@ -133,6 +134,9 @@ class TabLimiterPopup {
       </div>
     `;
   }
+
+  //onclick="tabLimiterPopup.editSite('${limit.id}')"
+  // onclick="tabLimiterPopup.deleteSite('${limit.id}')"
 
   private renderSiteLimits(siteLimits: SiteLimit[]): void {
     const sortedLimits = siteLimits.sort((a, b) => b.createdAt - a.createdAt);
@@ -151,12 +155,27 @@ class TabLimiterPopup {
             </div>
           </div>
           <div class="site-actions">
-            <button class="btn btn-small btn-secondary" onclick="tabLimiterPopup.editSite('${limit.id}')">Edit</button>
-            <button class="btn btn-small btn-danger" onclick="tabLimiterPopup.deleteSite('${limit.id}')">Delete</button>
+            <button data-siteid = ${limit.id} class="editBtn btn btn-small btn-secondary">Edit</button>
+            <button  data-siteid = ${limit.id} class="deleteBtn btn btn-small btn-danger">Delete</button>
           </div>
         </div>
       `;
     }).join('');
+    
+      this.siteList.querySelectorAll('.editBtn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const siteId = (e.currentTarget as HTMLElement).dataset.siteid!;
+      // this.editSite(siteId);
+    });
+  });
+
+  this.siteList.querySelectorAll('.deleteBtn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const siteId = (e.currentTarget as HTMLElement).dataset.siteid!;
+      this.deleteSite(siteId);
+    });
+  });
+
   }
 
   private getTimeUntilReset(limit: SiteLimit): string {
@@ -173,6 +192,9 @@ class TabLimiterPopup {
         break;
       case 'week':
         resetInterval = 7 * 24 * 60 * 60 * 1000;
+        break;
+          case 'minutes':
+        resetInterval = 30 * 60 * 1000;
         break;
     }
 
