@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -57,7 +57,7 @@
   --success-text: #065f46;
   --error-bg: #fee2e2;
   --error-text: #991b1b;
-  --card-bg: #7d91a5;
+  --card-bg: #ffffff;
   --transition: all 0.2s ease-in-out;
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
@@ -337,20 +337,20 @@ body {
     <h1>Tab Limiter</h1>
   </div>
 
-  <div id="status" class="status" style="display: none;"></div>
+  <div id="status" class="status" style="display: none;" role="status" aria-live="polite"></div>
 
   <div class="section">
     <h3>Add New Site Limit</h3>
     <form id="addSiteForm">
       <div class="form-group">
         <label for="siteUrl">Website URL or Domain</label>
-        <input type="text" id="siteUrl" placeholder="e.g., facebook.com, twitter.com, *.youtube.com" required>
+        <input type="text" id="siteUrl" placeholder="e.g., facebook.com, twitter.com, *.youtube.com" autocomplete="off" required>
       </div>
       
       <div class="form-row">
         <div class="form-group">
           <label for="visitLimit">Visit Limit</label>
-          <input type="number" id="visitLimit" min="1" max="100" value="5" required>
+          <input type="number" id="visitLimit" min="1" max="100" value="5" inputmode="numeric" required>
         </div>
         
         <div class="form-group">
@@ -359,7 +359,7 @@ body {
             <option value="hour">Per Hour</option>
             <option value="day" selected>Per Day</option>
             <option value="week">Per Week</option>
-            <option value="minutes">Per 30 Minutes</option>
+            <option value="30m">Per 30 Minutes</option>
           </select>
         </div>
       </div>
@@ -380,8 +380,8 @@ body {
 
   <div class="section">
     <h3>Quick Actions</h3>
-    <button id="clearAllBtn" class="btn btn-danger">Clear All Limits</button>
-    <button id="resetCountsBtn" class="btn btn-secondary">Reset Visit Counts</button>
+    <button type="button" id="clearAllBtn" class="btn btn-danger">Clear All Limits</button>
+    <button type="button" id="resetCountsBtn" class="btn btn-secondary">Reset Visit Counts</button>
   </div>
 
   <script type="module" src="../dist/popup.js"></script>

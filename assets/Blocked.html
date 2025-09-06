@@ -1,7 +1,10 @@
   <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Site Blocked - Tab Limiter</title>
+     <html lang="en">
+            <head>
+       <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <meta name="color-scheme" content="light dark">
+       <title>Site Blocked - Tab Limiter</title>
         <style>
           body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -96,6 +99,10 @@
           .btn-secondary:hover {
             background: #545b62;
           }
+          .btn:focus-visible {
+            outline: 3px solid rgba(0,123,255,0.5);
+            outline-offset: 2px;}
+
           .iconimg{
             width: 85px;
           }
@@ -104,7 +111,7 @@
       <body>
         <div class="container">
           <div class="icon">
-            <img class="iconimg" src="road-barrier.png"/>
+           <img class="iconimg" src="road-barrier.png" alt="" role="presentation" />
           </div>
           <h1>Site Visit Limit Reached</h1>
           <div class="site-url"></div>
@@ -126,8 +133,8 @@
             </div>
           </div>
           <div class="actions">
-            <button class="btn btn-primary" >Close Tab</button>
-            <button class="btn btn-secondary">Go Back</button>
+                 <button type="button" class="btn btn-primary">Close Tab</button>
+                 <button type="button" class="btn btn-secondary">Go Back</button>
           </div>
         </div>
         
