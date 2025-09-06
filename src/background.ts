@@ -143,15 +143,13 @@ class TabLimiterBackground {
     //MARKED UNUSED 
 
     try {
-      // chrome.tabs.goBack(tab.id);
-
-chrome.tabs.update({
-url: chrome.runtime.getURL('/assets/Blocked.html') +
-  `?timeUntilReset=${timeUntilReset}` +
-  `&visitCount=${siteLimit.visitCount}` +
-  `&visitLimit=${siteLimit.visitLimit}` +
-  `&siteUrl=${encodeURIComponent(siteLimit.url)}` +
-  `&timeInterval=${siteLimit.timeInterval}`});
+          const blockedPageUrl = chrome.runtime.getURL('/assets/Blocked.html') +
+       `?timeUntilReset=${encodeURIComponent(timeUntilReset)}` +
+       `&visitCount=${siteLimit.visitCount}` +
+       `&visitLimit=${siteLimit.visitLimit}` +
+       `&siteUrl=${encodeURIComponent(siteLimit.url)}` +
+        `&timeInterval=${siteLimit.timeInterval}`;
+         chrome.tabs.update(tab.id, { url: blockedPageUrl });
 
 } catch (error) {
       console.error('Error blocking site:', error);
@@ -172,10 +170,6 @@ url: chrome.runtime.getURL('/assets/Blocked.html') +
     }
   }
 
-  // private generateBlockPage(siteLimit: SiteLimit, timeUntilReset: string): string {
-  //   return `
-    
-  // }
 
 
 
@@ -190,14 +184,21 @@ url: chrome.runtime.getURL('/assets/Blocked.html') +
     });
   }
 }
-  // example output 
-  /*
-  {
-  "siteLimits": {
-    "facebook.com": 10
-  }
- }
-  */
++  /*
++  {
++    "siteLimits": {
++      "unique-id-123": {
++        "id": "unique-id-123",
++        "url": "facebook.com",
++        "visitLimit": 10,
++        "timeInterval": "day",
++        "visitCount": 5,
++        "lastReset": 1699999999999,
++        "createdAt": 1699999999999
++      }
++    }
++  }
++  */
 
 // Initialize the background service
 new TabLimiterBackground();

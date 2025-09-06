@@ -258,6 +258,14 @@ body {
   font-size: 0.75rem;
 }
 
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 1px, 1px);
+  white-space: nowrap; border: 0;
+}
+
 .status {
   text-align: center;
   padding: 0.75rem;
@@ -339,7 +347,7 @@ body {
     <h1>Tab Limiter</h1>
   </div>
 
-  <div id="status" class="status" style="display: none;" role="status" aria-live="polite"></div>
+  <div id="status" class="status visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <div class="section">
     <h3>Add New Site Limit</h3>
