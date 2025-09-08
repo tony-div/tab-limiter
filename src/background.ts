@@ -3,6 +3,7 @@ interface SiteLimit {
   url: string;
   visitLimit: number;
   timeInterval: 'hour' | 'day' | 'week' | 'minutes';
+  duration:number;
   visitCount: number;
   lastReset: number;
   createdAt: number;
@@ -118,17 +119,17 @@ class TabLimiterBackground {
 
   private getResetTime(siteLimit: SiteLimit): number {
     const lastReset = siteLimit.lastReset;
-    
+    const duration = siteLimit.duration
 // multiply by 1000 to convert it to milliseconds
     switch (siteLimit.timeInterval) {
       case 'hour':
-        return lastReset + (60 * 60 * 1000);
+        return lastReset + (duration * 60 * 60 * 1000);
       case 'day':
-        return lastReset + (24 * 60 * 60 * 1000);
+        return lastReset + (duration * 24 * 60 * 60 * 1000);
       case 'week':
-        return lastReset + (7 * 24 * 60 * 60 * 1000);
+        return lastReset + ( duration * 7 * 24 * 60 * 60 * 1000);
       case 'minutes':
-        return lastReset + (30 * 60*1000)
+        return lastReset + (duration *60*1000)
       default:
         return lastReset + (24 * 60 * 60 * 1000);
     }
@@ -140,15 +141,16 @@ class TabLimiterBackground {
     const nextReset = this.getResetTime(siteLimit);
     const timeUntilReset = this.formatTimeUntilReset(nextReset - Date.now());
 
-    //MARKED UNUSED 
 
     try {
-          const blockedPageUrl = chrome.runtime.getURL('/assets/Blocked.html') +
-       `?timeUntilReset=${encodeURIComponent(timeUntilReset)}` +
-       `&visitCount=${siteLimit.visitCount}` +
-       `&visitLimit=${siteLimit.visitLimit}` +
-       `&siteUrl=${encodeURIComponent(siteLimit.url)}` +
-        `&timeInterval=${siteLimit.timeInterval}`;
+        const blockedPageUrl = chrome.runtime.getURL('/assets/Blocked.html') +
+          `?timeUntilReset=${encodeURIComponent(timeUntilReset)}` +
+          `&visitCount=${siteLimit.visitCount}` +
+          `&visitLimit=${siteLimit.visitLimit}` +
+          `&duration=${siteLimit.duration}`+
+          `&siteUrl=${encodeURIComponent(siteLimit.url)}` +
+          `&timeInterval=${siteLimit.timeInterval}`;
+
          chrome.tabs.update(tab.id, { url: blockedPageUrl });
 
 } catch (error) {
@@ -159,6 +161,7 @@ class TabLimiterBackground {
   private formatTimeUntilReset(milliseconds: number): string {
     const hours = Math.floor(milliseconds / (60 * 60 * 1000));
     const minutes = Math.floor((milliseconds % (60 * 60 * 1000)) / (60 * 1000));
+const seconds = Math.floor((milliseconds % (60 * 1000)) / 1000);
 
     if (hours > 24) {
       const days = Math.floor(hours / 24);
@@ -166,7 +169,7 @@ class TabLimiterBackground {
     } else if (hours > 0) {
       return `${hours} hour${hours !== 1 ? 's' : ''} and ${minutes} minute${minutes !== 1 ? 's' : ''}`;
     } else {
-      return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+      return `${minutes} minute${minutes !== 1 ? 's' : ''} and ${seconds} second${seconds !==1 ? 's' : ''}`;
     }
   }
 
