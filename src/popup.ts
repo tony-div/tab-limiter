@@ -3,6 +3,7 @@ interface SiteLimit {
   url: string;
   visitLimit: number;
   timeInterval: 'hour' | 'day' | 'week' | 'minutes';
+  duration:number;
   visitCount: number;
   lastReset: number;
   createdAt: number;
@@ -43,12 +44,14 @@ class TabLimiterPopup {
     const urlInput = document.getElementById('siteUrl') as HTMLInputElement;
     const limitInput = document.getElementById('visitLimit') as HTMLInputElement;
     const intervalSelect = document.getElementById('timeInterval') as HTMLSelectElement;
+    const durationInput = document.getElementById('duration') as HTMLInputElement;
 
     const url = urlInput.value.trim();
     const visitLimit = parseInt(limitInput.value);
     const timeInterval = intervalSelect.value as 'hour' | 'day' | 'week' | 'minutes';
+    const duration = parseInt(durationInput.value,10)
 
-    if (!url || !visitLimit || visitLimit < 1) {
+    if (!url || !visitLimit || !duration || !Number.isInteger(duration) ||duration < 1 || visitLimit < 1) {
       this.showStatus('Please fill in all fields with valid values.', 'error');
       return;
     }
@@ -64,6 +67,7 @@ class TabLimiterPopup {
         id: siteId,
         url: normalizedUrl,
         visitLimit,
+        duration,
         timeInterval,
         visitCount: 0,
         lastReset: Date.now(),
@@ -140,19 +144,22 @@ class TabLimiterPopup {
 
   private renderSiteLimits(siteLimits: SiteLimit[]): void {
     const sortedLimits = siteLimits.sort((a, b) => b.createdAt - a.createdAt);
-    
     this.siteList.innerHTML = sortedLimits.map(limit => {
+      
       const timeLeft = this.getTimeUntilReset(limit);
       const isLimitReached = limit.visitCount >= limit.visitLimit;
-      
+    
       return `
         <div class="site-item ${isLimitReached ? 'limit-reached' : ''}">
           <div class="site-info">
             <div class="site-url">${limit.url}</div>
-            <div class="site-limit">
-              ${limit.visitCount}/${limit.visitLimit} visits per ${limit.timeInterval}
-              ${timeLeft ? ` • Resets ${timeLeft}` : ''}
-            </div>
+        <div class="site-limit">
+${limit.visitCount >= limit.visitLimit
+      ? 'Limit reached'
+      : `${limit.visitCount}/${limit.visitLimit} visits per ${limit.duration} ${limit.timeInterval}`}
+  <span>  
+  <div>${timeLeft? `• Resets ${timeLeft}` : '' }</div>
+</div>
           </div>
           <div class="site-actions">
             <button data-siteid = ${limit.id} class="editBtn btn btn-small btn-secondary">Edit</button>
@@ -181,20 +188,22 @@ class TabLimiterPopup {
   private getTimeUntilReset(limit: SiteLimit): string {
     const now = Date.now();
     const lastReset = limit.lastReset;
+    const duration = limit.duration;
+
     
     let resetInterval: number = 0;
     switch (limit.timeInterval) {
       case 'hour':
-        resetInterval = 60 * 60 * 1000;
+        resetInterval = duration * 60 * 60 * 1000;
         break;
       case 'day':
-        resetInterval = 24 * 60 * 60 * 1000;
+        resetInterval = duration * 24 * 60 * 60 * 1000;
         break;
       case 'week':
-        resetInterval = 7 * 24 * 60 * 60 * 1000;
+        resetInterval = duration * 7 * 24 * 60 * 60 * 1000;
         break;
           case 'minutes':
-        resetInterval = 30 * 60 * 1000;
+        resetInterval = duration * 60 * 1000;
         break;
     }
 
@@ -207,6 +216,8 @@ class TabLimiterPopup {
 
     const hours = Math.floor(timeLeft / (60 * 60 * 1000));
     const minutes = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+const seconds = Math.floor((timeLeft % (60 * 1000)) / 1000);
+
 
     if (hours > 24) {
       const days = Math.floor(hours / 24);
@@ -214,7 +225,9 @@ class TabLimiterPopup {
     } else if (hours > 0) {
       return `in ${hours}h ${minutes}m`;
     } else {
-      return `in ${minutes}m`;
+
+        return `${minutes} minute${minutes !== 1 ? 's' : ''} and ${seconds} second${seconds !==1 ? 's' : ''}`;
+
     }
   }
 
